@@ -6,12 +6,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.au.itinventory.models.Employee;
 import com.au.itinventory.models.EmployeeInventory;
 import com.au.itinventory.models.Inventory;
 import com.au.itinventory.models.Item;
+import com.au.itinventory.models.ItemStatus;
 import com.au.itinventory.models.ItemSummary;
 import com.au.itinventory.models.UserRole;
 import com.au.itinventory.services.InventoryService;
@@ -20,6 +23,7 @@ import com.au.itinventory.services.UserService;
 import java.util.List;
 
 @Controller
+@RequestMapping("/")
 public class InventoryController {
 
 		@Autowired
@@ -45,47 +49,60 @@ public class InventoryController {
 		public ModelAndView login(@RequestParam("emailID") String emailID){
 			
 			ModelAndView model=null;
-			/*UserRole user= new UserRole();
-			user.setEmailID(emailID);
+			System.out.println("logggedin");
+			//User user= new User();
+			//user.setEmailID(emailID);
 			System.out.println(emailID);
-			String userRole=userService.getUserDetails(user);
-			if(userRole.equals("ITAdmin"))
+			String userRole=userService.getUserDetails(emailID);
+			System.out.println(userRole);
+			if(userRole==null)
+			{		
+				model=new ModelAndView(new RedirectView("registration.html"));
+				//System.out.println(userRole);
+		}
+		
+			else if(userRole.equals("ITAdmin"))
 			{
-				model=new ModelAndView("admin");
+				model=new ModelAndView(new RedirectView("admin.html"));
+				//System.out.println(userRole);
 			}
 			else if(userRole.equals("Employee"))
 			{
-				model=new ModelAndView("employee");
+				model=new ModelAndView(new RedirectView("employee.html"));
+				//System.out.println(userRole);
 			}
-			else
-			{
-				model=new ModelAndView("register");
-			}*/
 			return model;
 		}
 		
-		@RequestMapping(value = "/register", method = RequestMethod.GET)
-		public ModelAndView Register(@RequestParam("EmployeeID") int employeeID,
-				@RequestParam("EmployeeName") String employeeName,
-				@RequestParam("EmployeeLocation") String employeeLocation,
-				@RequestParam("MobileNumber") String mobileNumber,
-				@RequestParam("EmployeeEmail") String employeeEmail){
+		@RequestMapping(value = "/register", method = RequestMethod.POST, consumes= "application/json")
+	 	public ModelAndView Registration(@RequestBody Employee emp) {
 			System.out.println("Register New User");
+			System.out.println(emp.getRoleID() +" "+emp.getEmpName());
 			ModelAndView model = null;
-			Employee emp=new Employee();
-			emp.setEmpName(employeeName);
-			emp.setEmpID(employeeID);
-			emp.setEmpLocation(employeeLocation);
-			emp.setPhone(mobileNumber);
-			emp.setEmpEmail(employeeEmail);
-			System.out.println(employeeID+" "+employeeName);
 			String result=userService.registerEmployee(emp);
-			if(result.equals("success"))
-			{		
-				model=new ModelAndView("employees");
-				System.out.println(result);
-			}
+			model=new ModelAndView(new RedirectView("employee.html"));
 			return model;
+			
+		}
+		
+		
+		@RequestMapping(value = "/itemStatus", method = RequestMethod.GET, produces= "application/json")
+		@ResponseBody
+	 	public ItemStatus itemCategoryStatus() {
+			System.out.println("Item Status");
+			//System.out.println(emp.getRoleID() +" "+emp.getEmpName());
+			//ModelAndView model = null;
+			//String result=userService.registerEmployee(emp);
+			//model=new ModelAndView(new RedirectView("employee.html"));
+			//return model;
+			
+			ItemStatus itemStatus=new ItemStatus();
+			itemStatus.setTotal(10);
+			itemStatus.setInstock(5);
+			itemStatus.setAllocated(4);
+			itemStatus.setDefective(1);
+			return itemStatus;
+			
 		}
 		
 		@RequestMapping(value = "/viewItem", method = RequestMethod.GET)
@@ -115,20 +132,20 @@ public class InventoryController {
 			
 			int flag=inventoryService.allocateItem(empInventory);
 			//int flag=inventoryService.allocateItem(inventory);
-			if(flag==1)
-			{
-				model=new ModelAndView("insertSuccess");
-				/*model.addObject("ItemID", itemID);
-				model.addObject("EmpID", empID);*/
-			}
-			else if(flag==2)
-			{
-				model=new ModelAndView("already allocated");
-			}
-			else
-			{
-				model=new ModelAndView("defective");
-			}
+//			if(flag==1)
+//			{
+//				model=new ModelAndView("insertSuccess");
+//				/*model.addObject("ItemID", itemID);
+//				model.addObject("EmpID", empID);*/
+//			}
+//			else if(flag==2)
+//			{
+//				model=new ModelAndView("already allocated");
+//			}
+//			else
+//			{
+//				model=new ModelAndView("defective");
+//			}
 			return model;
 		}
 		

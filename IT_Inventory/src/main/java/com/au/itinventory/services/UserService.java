@@ -38,13 +38,12 @@ public class UserService {
 		
 	}
 
-	public String getUserDetails(UserRole userRole) {
+	public String getUserDetails(String emailID) {
 		// TODO Auto-generated method stub
 		String role;
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		userDao = (UserDao) context.getBean("userDAO");
-	    UserRole dbUser=userDao.getUserDetails(userRole);
-	    role=dbUser.getRole();
+		userDao = (UserDao) context.getBean("userDao");
+		role=userDao.getUserDetails(emailID);
 	    return role;
 	}
 }

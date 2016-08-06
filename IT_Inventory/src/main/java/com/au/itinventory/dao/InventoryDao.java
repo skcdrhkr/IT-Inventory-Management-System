@@ -133,13 +133,13 @@ public class InventoryDao {
 		Integer count=jdbcTemplate.query(sql, new ResultSetExtractor<Integer>(){
 			   public Integer extractData(ResultSet rs) throws SQLException
 			   {
-				   int count;
+				   int count=0;
 			    if(rs.next()==true){		    
 			    	count=rs.getInt(1);
 			    	return count;
 			   }
 			    else{
-			    	return null;
+			    	return count;
 			    }
 			   }});
 		

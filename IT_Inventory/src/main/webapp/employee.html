@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Items Issued</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> 
+<style type="text/css">
+    .bs{
+    	margin: 20px;
+    }
+</style>
+<h1 align="center">Items Issued</h1>
+<script>
+function getNewXmlHttp(){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  return xmlhttp;
+	}
+
+function viewItemDetails(element){
+
+	  var xmlhttp1 = getNewXmlHttp();
+	  
+	  xmlhttp1.onreadystatechange = function(){
+	  if (xmlhttp1.readyState==4 && xmlhttp1.status==200)
+	    {
+	      var metaData=xmlhttp1.responseText;
+	      
+	      document.getElementById("ItemDetail").innerHTML=metaData;
+	   		}
+	    }  
+	  	console.log("Inside View Item Details");
+		console.log(element.name);
+		var item=element.name;
+		var empId=1774;
+		var url="http://localhost:8080/IT_Inventory/viewItems?empID="+empId+"&itemType="+item;
+		console.log(url);
+	  xmlhttp1.open("GET",url,true);
+	  xmlhttp1.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	  xmlhttp1.send();
+	}
+
+</script>
+
+</head>
+<body>
+<div class="bs" >
+         <div class="form-group" style="clear:left" align="center">
+                  <input type="submit" class="btn btn-primary" name="Laptop" value="Laptop" data-dismiss="modal" onClick="viewItemDetails(this)">
+        </div>
+        <div class="form-group" style="clear:left" align="center">
+                  <button type="submit" class="btn btn-primary" data-dismiss="modal">HeadPhones</button>
+        </div>
+         <div class="form-group" style="clear:left" align="center">
+                  <button type="submit" class="btn btn-primary" data-dismiss="modal">Bag</button>
+        </div>
+        <div class="form-group" style="clear:left" align="center">
+                  <button type="submit" class="btn btn-primary" data-dismiss="modal">Mouse</button>
+        </div>
+       
+        <div class="form-group">
+        Details:
+        <!-- <label for="items">Details:</label> -->
+        <!-- <div id="details"></div> -->
+        <div id="ItemDetail"></div>
+        </div>
+</div>
