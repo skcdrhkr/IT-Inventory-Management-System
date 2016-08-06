@@ -3,19 +3,11 @@ package com.au.itinventory.models;
 public class EmployeeInventory {
 	private String itemID;
 	private int empID;
-	private String itemCategory;
+	private String itemCategoryName;
 	private String status;
 	
 	public EmployeeInventory() {
 		super();
-	}
-
-	public EmployeeInventory(String itemID, int empID, String itemCategory,String status) {
-		super();
-		this.itemID = itemID;
-		this.empID = empID;
-		this.itemCategory = itemCategory;
-		this.status=status;
 	}
 
 	public String getItemID() {
@@ -34,12 +26,12 @@ public class EmployeeInventory {
 		this.empID = empID;
 	}
 
-	public String getItemCategory() {
-		return itemCategory;
+	public String getItemCategoryName() {
+		return itemCategoryName;
 	}
 
-	public void setItemCategory(String itemCategory) {
-		this.itemCategory = itemCategory;
+	public void setItemCategoryName(String itemCategoryName) {
+		this.itemCategoryName = itemCategoryName;
 	}
 
 	public String getStatus() {
@@ -49,6 +41,7 @@ public class EmployeeInventory {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
+		
 	
 }

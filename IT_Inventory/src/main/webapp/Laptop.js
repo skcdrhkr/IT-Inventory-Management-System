@@ -18,46 +18,17 @@ angular.module('LaptopModule', [])
   //         $scope.descriptions = data.join('\n');
   //         $scope.rowCount = data.length;
 
-	$scope.itemStatus ={
-  			Total : '',
-  			InStock :'',
-  			Allocated :'',
-  			Defective :'',
-  			};
-  		
-	
-	
-         // $scope.laptop=[];
 
-//          			$scope.loadDetails= function(){		
-//				$http({
-//       				 method : 'GET',
-//         			 url : 'http://localhost:8080/IT_Inventory/summary'
-//    				 }).then(function successCallback(response) {
-//    				 	$scope.laptop = response.data;
-//    				 	$scope.descriptions = $scope.laptop.join('\n');
-//    				 	$scope.rowCount = $scope.laptop.length;
-//         
-//    				 }, function errorCallback(response) {
-//        			 console.log(response.statusText);
-//    				 });
-//			}
-//      
-		$scope.loadDetails = function(itemname){
-		//var dataObj = $scope.employee;	
-		console.log(itemname.name);
-		//var temp;
-		//http://localhost:8080/IT_Inventory/registration.html
-		 $http.get('http://localhost:8080/IT_Inventory/itemStatus').then(function successCallback(response) {
-	            itemStatus = response.data;
-	            alert(itemStatus);
-	            
-	        }, function errorCallback(response) {
-	            console.log(response.statusText);
-	        })
-		}
 	
 
+	
+	
+//	$window.onload = function(e) {
+//		  //your magic here
+//		console.log("Function loaded automatically");
+//	}
+
+	
             $scope.laptopView = false;
 			$scope.homeDisplay = true;
 			$scope.AllocateForm = false;
@@ -108,7 +79,40 @@ angular.module('LaptopModule', [])
 			}
 
 
-
+			$scope.itemStatus ={
+		  			Total : '',
+		  			InStock :'',
+		  			Allocated :'',
+		  			Defective :'',
+		  			};
+		  		
+	
+//			$scope.loadSummary=function(itemname){
+//				console.log(itemname.item);
+//				var itemName=itemname.item;
+//				 $http.get('http://localhost:8080/IT_Inventory/summary?itemCategoryName='+itemName).then(function successCallback(response) {
+//			            itemSummary = response.data;
+//			            alert(itemSummary);
+//			            
+//			        }, function errorCallback(response) {
+//			            console.log(response.statusText);
+//			        })
+//				}
+			
+			
+			$scope.loadDetails = function(itemname){
+				console.log(itemname.item);
+				var itemName=itemname.item;
+				 $http.get('http://localhost:8080/IT_Inventory/itemStatus?itemCategoryName='+itemName).then(function successCallback(response) {
+			            itemStatus = response.data;
+			            //alert(itemStatus);
+			            
+			        }, function errorCallback(response) {
+			            console.log(response.statusText);
+			        })
+				}
+			
+			
 
        		$scope.item ={
       			itemID : '',
@@ -140,9 +144,6 @@ angular.module('LaptopModule', [])
 				});
 			}
 
-
-
-
 	})
 
       
@@ -150,7 +151,44 @@ angular.module('LaptopModule', [])
 
       .controller('ListController', function($scope,$http) {
 
-      	$scope.items=['Laptop' , 'Mouse' , 'HeadPhones', 'Bag']
+      	//$scope.items=['Laptop' , 'Mouse' , 'HeadPhones', 'Bag']
+      	$scope.items=[];
+    	$scope.fn_load = function () {
+  		  console.log("page load List Controller")
+  		  $http({
+       				 method : 'GET',
+         			 url : 'http://localhost:8080/IT_Inventory/viewItemList'
+    				 }).then(function successCallback(response) {
+    				 	$scope.items = response.data;
+    				 	console.log(items);
+         
+    				 }, function errorCallback(response) {
+        			 console.log(response.statusText);
+    			});
+			}
+
+//    	$scope.loadSummary=function(itemName){
+//    		
+//    		console.log(itemName.item);
+//    	}
+//    	    
+    	$scope.loadSummary=function(itemname){
+			console.log(itemname.item);
+			var itemName=itemname.item;
+			var itemSummary=[];
+			 $http.get('http://localhost:8080/IT_Inventory/summary?itemCategoryName='+itemName).then(function successCallback(response) {
+		            itemSummary = response.data;
+		            alert(itemSummary);
+		            
+		        }, function errorCallback(response) {
+		            console.log(response.statusText);
+		        })
+			}
+		
+    	
+    	
+  		})
+
 
 //      	 $scope.items=[];
 //
@@ -168,36 +206,29 @@ angular.module('LaptopModule', [])
 
 
 
-      })
 
-      .controller ('Allocatecontroller' , function($scope,$http){
+.controller ('Allocatecontroller' , function($scope,$http){
 
 
       		$scope.employee ={
       			itemID : '',
       			empID : '',
-      			itemCategory :'',
+      			itemCategoryName :'',
       			status:''
 			};
-
       		
-
 			//$scope.variable = employee;
 
 			//$scope.variable = "AngularJS POST Spring MVC Example:";	
 
 			$scope.detailSubmit = function(){
 				var dataObj = $scope.employee;		
-
+				
 				$http.post('http://localhost:8080/IT_Inventory/allocateItem', dataObj).then(function successCallback(response) {
-		            //temp = response.data;
-		            //alert("Registration Success");
-					//$scope.responseData = data;
 					alert("Allocation Success");
-				});
-				//response.error(function(data, status, headers, config) {
-				//	alert( "Exception details: " + JSON.stringify({data: data}));
-				//});
+				}, function errorCallback(response) {
+		            console.log(response.statusText);
+		        });
 			}
 
      
@@ -206,46 +237,13 @@ angular.module('LaptopModule', [])
 				var dataObj = $scope.employee;		
 
 				$http.post('http://localhost:8080/IT_Inventory/deallocateItem', dataObj).then(function successCallback(response) {
-		            //temp = response.data;
-		            //alert("Registration Success");
-					//$scope.responseData = data;
 					alert("Deallocation Success");
-				});
+				}, function errorCallback(response) {
+		            console.log(response.statusText);
+		        });
 				
 			}
 
       })
-
-          
-        
-
-			//$scope.variable = employee;
-
-			//$scope.variable = "AngularJS POST Spring MVC Example:";	
-
-
-		
-			
-
-
-
-
-// import org.springframework.stereotype.Controller;
-// import org.springframework.web.bind.annotation.RequestBody;
-// import org.springframework.web.bind.annotation.RequestMapping;
-// import org.springframework.web.bind.annotation.RequestMethod;
-// import org.springframework.web.bind.annotation.ResponseBody;
- 
- 
-// @Controller
-// public class SpringMVCController {
-	
-// 	@RequestMapping(value = "/Registration", method = RequestMethod.POST)
-// 	public @ResponseBody String Registration(@RequestBody Employee emp) {
-		
-
-
-// 		return reponseData.toString();
-// 	}
- 
-// }
+         
+   

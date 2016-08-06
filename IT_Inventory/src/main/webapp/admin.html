@@ -82,9 +82,9 @@
                     
                     <li >
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Cateogaries <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul ng-controller="ListController" id="demo" class="collapse">
+                        <ul ng-controller="ListController" id="demo" class="collapse"   data-ng-init="fn_load()">
                             <li  ng-repeat="item in items">
-                                <a ng-click="showLaptop(); loadDetails('Laptop')">{{item}}</a>
+                                <a ng-click="showLaptop(); loadSummary(this); loadDetails(this); ">{{item}}</a>
                             </li> 
                         </ul>
                     </li>
@@ -289,11 +289,11 @@
                             </div>
 
                             <div class="form-group">
-                            <label for="itemCateogary" class="cols-sm-2 control-label" style="color:white;">Item Cateogary</label>
+                            <label for="itemCategoryName" class="cols-sm-2 control-label" style="color:white;">Item Category Name</label>
                             <div class="cols-sm-10" style="width:450px">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                    <input ng-model="employee.itemCateogary" type="text" class="form-control" name="itemCateogary" id="itemCateogary"  placeholder="Enter Item Cateogary"/>
+                                    <input ng-model="employee.itemCategoryName" type="text" class="form-control" name="itemCategoryName" id="itemCategoryName"  placeholder="Enter Item Category Name"/>
                                 </div>
                             </div>
                             </div>

@@ -1,3 +1,4 @@
+create database IT_Inventory
 create table UserRole(roleID int NOT NULL, role nvarchar(20) NOT NULL,primary key(roleID));
 
 create table Employee(empID int NOT NULL,roleID int NOT NULL,empName nvarchar(30) NOT NULL, empLocation nvarchar(20),empEmail nvarchar(60),phone nvarchar(20),primary key(empID));

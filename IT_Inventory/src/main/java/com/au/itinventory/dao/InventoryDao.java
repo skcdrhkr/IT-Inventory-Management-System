@@ -62,10 +62,10 @@ public class InventoryDao {
 		// TODO Auto-generated method stub
 		String itemID=empInventory.getItemID();
 		int empID=empInventory.getEmpID();
-		String itemName=empInventory.getItemCategory();
+		String itemName=empInventory.getItemCategoryName();
 		int flag=0;
 		String query;
-		if(status.equals("returned"))
+		if(status.equalsIgnoreCase("returned"))
 		{
 			query="update Inventory_Emp set empID="+empID+"where itemID='"+itemID+"';";
 			flag=jdbcTemplate.update(query);
@@ -98,7 +98,7 @@ public class InventoryDao {
 		// TODO Auto-generated method stub
 		String itemID=empInventory.getItemID();
 		int empID=empInventory.getEmpID();
-		String itemName=empInventory.getItemCategory();
+		String itemName=empInventory.getItemCategoryName();
 		String status=empInventory.getStatus();
 		
 		String query="update Inventory_Emp set empID="+1772+"where itemID='"+itemID+"';";
@@ -178,13 +178,15 @@ public class InventoryDao {
 	public int createNewItemType(String newItem) {
 		// TODO Auto-generated method stub
 		String query="create table "+newItem+"_Category(itemtypeID nvarchar(30) NOT NULL, model nvarchar(30) NOT NULL,warranty int NOT NULL,dateofpurcharse nvarchar(40),primary key(itemtypeID));";
+		String query1="insert into Categories values('"+newItem+"');";
 		int flag=jdbcTemplate.update(query);
+		jdbcTemplate.update(query1);
 		return flag;
 	}
 
 	public List<ItemSummary> getItemSummary(String itemName) {
 		// TODO Auto-generated method stub
-		String query="select inventory.itemID,empInventory.empID,inventory.status,employee.empLocation,item.model,inventory.dateOfPurchase from Inventory inventory,Inventory_Emp empInventory,Employee employee,+"+itemName+"_Category item where empInventory.itemID=inventory.itemID and inventory.itemTypeID=item.itemtypeID and empInventory.empID=employee.empID;";
+		String query="select inventory.itemID,empInventory.empID,inventory.status,employee.empLocation,item.model,inventory.dateOfPurchase from Inventory inventory,Inventory_Emp empInventory,Employee employee,"+itemName+"_Category item where empInventory.itemID=inventory.itemID and inventory.itemTypeID=item.itemtypeID and empInventory.empID=employee.empID;";
 		return jdbcTemplate.query(query, new ResultSetExtractor<List<ItemSummary>>(){
 			List<ItemSummary> list=new ArrayList<ItemSummary>();
 			   public List<ItemSummary> extractData(ResultSet rs) throws SQLException
@@ -204,6 +206,24 @@ public class InventoryDao {
 
 	            return list;
 			   }});
+	}
+
+	public List<String> getItemList() {
+		// TODO Auto-generated method stub
+		//return null;
+		String query="select categoryName from Categories;";
+		return jdbcTemplate.query(query, new ResultSetExtractor<List<String>>(){
+			List<String> list=new ArrayList<String>();
+			   public List<String> extractData(ResultSet rs) throws SQLException
+			   {
+			    
+			    //ItemSummary item=null;
+	            while (rs.next()) {   
+	            	list.add(rs.getString(1));
+	            }
+	            return list;
+			   }});
+
 	}
 
 	

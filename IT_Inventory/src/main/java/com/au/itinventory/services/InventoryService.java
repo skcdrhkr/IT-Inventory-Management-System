@@ -42,11 +42,11 @@ public class InventoryService {
 					empInventory.setStatus("allocated");
 					flag=inventoryDao.allocateItemToEmp(empInventory);
 				}*/
-				if(status.equals("returned"))
+				if(status.equalsIgnoreCase("returned"))
 				{
 					flag=inventoryDao.allocateItemToEmp(empInventory,status);
 				}
-				else if(status.equals("defective"))
+				else if(status.equalsIgnoreCase("defective"))
 				{
 					//cannot allocate defective piece
 					flag=3;
@@ -60,7 +60,7 @@ public class InventoryService {
 		}
 		else
 		{
-			if(status.equals("in-stock"))
+			if(status.equalsIgnoreCase("in-stock"))
 			{
 				flag=inventoryDao.allocateItemToEmp(empInventory,status);
 			}
@@ -109,6 +109,11 @@ public class InventoryService {
 		inventoryDao = (InventoryDao) context.getBean("inventoryDao");
 		List<ItemSummary> itemsList=inventoryDao.getItemSummary(itemName);
 		return itemsList;
+	}
+
+	public List<String> getItemList() {
+		// TODO Auto-generated method stub
+		return inventoryDao.getItemList();
 	}
 	
 }

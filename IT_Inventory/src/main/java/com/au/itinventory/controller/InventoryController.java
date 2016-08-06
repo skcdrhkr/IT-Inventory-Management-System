@@ -20,6 +20,7 @@ import com.au.itinventory.models.UserRole;
 import com.au.itinventory.services.InventoryService;
 import com.au.itinventory.services.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -88,7 +89,7 @@ public class InventoryController {
 		
 		@RequestMapping(value = "/itemStatus", method = RequestMethod.GET, produces= "application/json")
 		@ResponseBody
-	 	public ItemStatus itemCategoryStatus() {
+	 	public ItemStatus itemCategoryStatus(@RequestParam("itemCategoryName") String itemCategoryName) {
 			System.out.println("Item Status");
 			//System.out.println(emp.getRoleID() +" "+emp.getEmpName());
 			//ModelAndView model = null;
@@ -104,6 +105,19 @@ public class InventoryController {
 			return itemStatus;
 			
 		}
+		
+		
+		@RequestMapping(value = "/viewItemList", method = RequestMethod.GET)
+		@ResponseBody
+		public List<String> viewItemList(){
+			List<String> list=inventoryService.getItemList();
+//			list.add("Laptop");
+//			list.add("Mouse");
+			return list;
+		}
+		
+		
+		
 		
 		@RequestMapping(value = "/viewItem", method = RequestMethod.GET)
 		public ModelAndView viewItem(@RequestParam("itemName") String itemName){
@@ -235,10 +249,12 @@ public class InventoryController {
 			return null;
 		}
 		
-		@RequestMapping(value = "/summary", method = RequestMethod.GET)
-		public List<ItemSummary> viewSummary(@RequestParam("itemName") String itemName){
+		@RequestMapping(value = "/summary", method = RequestMethod.GET,produces="application/json")
+		@ResponseBody
+		public List<ItemSummary> viewSummary(@RequestParam("itemCategoryName") String itemName){
 			//need to add required request params9
 			List<ItemSummary> itemsList=inventoryService.getItemSummary(itemName);
+			System.out.println("Summary");
 			return itemsList;
 		}
 		
