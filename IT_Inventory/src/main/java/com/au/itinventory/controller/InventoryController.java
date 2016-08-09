@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -34,14 +35,15 @@ public class InventoryController {
 		InventoryService inventoryService;
 		
 		
-		@RequestMapping(value = "/details", method = RequestMethod.GET)
-		public ModelAndView viewDetails(@RequestParam("empID") int empID){
-			ModelAndView model = new ModelAndView("employee");
+		@RequestMapping(value = "/employeeDetails", method = RequestMethod.GET)
+		@ResponseBody
+		public Employee viewDetails(@RequestParam("empEmail") String empEmail){
 			Employee emp= new Employee();
-			emp.setEmpID(empID);
+			emp.setEmpEmail(empEmail);
+			System.out.println(empEmail);
 			Employee dbemp=userService.getEmpDetails(emp);
-			model.addObject("Employee", dbemp);
-			return model;
+			//model.addObject("Employee", dbemp);
+			return dbemp;
 			
 			//return emp obj to UI to render it
 		}
@@ -91,22 +93,16 @@ public class InventoryController {
 		@ResponseBody
 	 	public ItemStatus itemCategoryStatus(@RequestParam("itemCategoryName") String itemCategoryName) {
 			System.out.println("Item Status");
-			//System.out.println(emp.getRoleID() +" "+emp.getEmpName());
-			//ModelAndView model = null;
-			//String result=userService.registerEmployee(emp);
-			//model=new ModelAndView(new RedirectView("employee.html"));
-			//return model;
-			
-			ItemStatus itemStatus=new ItemStatus();
-			itemStatus.setTotal(10);
-			itemStatus.setInstock(5);
-			itemStatus.setAllocated(4);
-			itemStatus.setDefective(1);
+		
+			ItemStatus itemStatus=inventoryService.getItemStatusSummary(itemCategoryName);
+			System.out.println("Allocated"+itemStatus.getAllocated());
+			System.out.println("Defective"+itemStatus.getDefective());
+			System.out.println("Instock"+itemStatus.getInstock());
 			return itemStatus;
 			
 		}
 		
-		
+				
 		@RequestMapping(value = "/viewItemList", method = RequestMethod.GET)
 		@ResponseBody
 		public List<String> viewItemList(){
@@ -135,53 +131,72 @@ public class InventoryController {
 }*/
 		
 		//allocate and add item same
-		@RequestMapping(value = "/allocateItem", method = RequestMethod.POST)
-		public ModelAndView allocateItem(@RequestBody EmployeeInventory empInventory){
+		@RequestMapping(value = "/allocateItem", method = RequestMethod.POST, produces="application/text")
+		@ResponseBody
+		public String allocateItem(@RequestBody EmployeeInventory empInventory){
 			
 			ModelAndView model=null;
 			/*Inventory inventory=new Inventory();
 			inventory.setItemID(itemID);
 			//inventory.setEmpID(empID);
 			inventory.setItemName(itemName);*/
-			
+			String result;
 			int flag=inventoryService.allocateItem(empInventory);
 			//int flag=inventoryService.allocateItem(inventory);
-//			if(flag==1)
-//			{
-//				model=new ModelAndView("insertSuccess");
-//				/*model.addObject("ItemID", itemID);
-//				model.addObject("EmpID", empID);*/
-//			}
-//			else if(flag==2)
-//			{
-//				model=new ModelAndView("already allocated");
-//			}
-//			else
-//			{
-//				model=new ModelAndView("defective");
-//			}
-			return model;
+			if(flag==1)
+			{
+				result="Allocation Success";
+				//model=new ModelAndView("insertSuccess");
+				/*model.addObject("ItemID", itemID);
+				model.addObject("EmpID", empID);*/
+			}
+			else if(flag==2)
+			{
+				result="Already Allocated";
+				//model=new ModelAndView("already allocated");
+			}
+			else
+			{
+				result="Defective Item";
+				//model=new ModelAndView("defective");
+			}
+			return result;
 		}
 		
 		@RequestMapping(value = "/deallocateItem", method = RequestMethod.POST)
-		public ModelAndView reallocateItem(@RequestBody EmployeeInventory empInventory){
+		public String reallocateItem(@RequestBody EmployeeInventory empInventory){
 			
 			ModelAndView model=null;
 			int flag=inventoryService.deAllocateItem(empInventory);
+			String result;
 			if(flag==1)
 			{
 				//success in dealloacting
+				result="Deallocation Success";
 			}
 			else
 			{
 				//error in deallocating
+				result="Deallocation Failed";
 			}
 			
-			return model;
+			return result;
 		
 		}
 
-		
+		@RequestMapping(value="/fileUpload",method=RequestMethod.POST)
+		public void fileUpload(@RequestParam(value="file", required=false) MultipartFile file,
+                @RequestParam(value="data") Object data)
+		{
+			//ModelAndView model=null;
+			System.out.println(file);
+			System.out.println(data);
+			//int flag=inventoryService.fileUpload(filepath);
+			//if(flag==1)
+				System.out.println("Success");
+			//return null;
+			
+		}
 		
 		/*{
 		    "itemID":"T2",

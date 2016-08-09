@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+   <!--  <meta name="google-signin-scope" content="profile email"> -->
+    <meta name="google-signin-client_id" content="996148857811-v0sqhp5928ovgj70jb380pbkdkkgfatj.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+
+    <title>IT-Admin</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="css/plugins/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+   <!-- <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css"> -->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+</style>
+<script>
+function onLoad() {
+      gapi.load('auth2', function() {
+        gapi.auth2.init();
+      });
+    }
+</script>
+</head>
+
+<body ng-app="AdminModule" ng-controller="AdminController">
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Welcome {{employee.empName}}</a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav"> 
+                <li class="dropdown">
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{employee.empName}} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                         <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> {{employee.empEmail}}</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#" ng-click="signOut();"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="active">
+                        <a ng-click="showHomePage()"><i class="fa fa-fw fa-dashboard"></i>Home</a>
+                    </li>
+                    
+                    <li >
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Categories <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo" class="collapse" data-ng-init="fn_load()">
+                            <li  ng-repeat="item in items">
+                                <a ng-click="showLaptop(); loadDetails(this);">{{item}}</a>
+                            </li> 
+                            <li ng-controller="upload">
+                                <a ngf-select ng-model="file" ngf-multiple="false" ng-click="upload()">Add New Item Type</a>
+                            </li> 
+                        </ul>
+                    </li>
+                    <li>
+                        <a ng-click="allocateForm()">Allocate Item</a>
+                    </li>
+                    <li>
+                        <a ng-click="DeallocateForm()">Deallocate Item</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <div id="page-wrapper"  ng-if="homeDisplay">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            IT-Inventory <small>Items-Overview</small>
+                        </h1>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                
+                <!-- /.row -->
+
+
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-laptop fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">26</div>
+                                        <div>Laptops</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a> -->
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-mouse-pointer fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">12</div>
+                                        <div>Mouse</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a> -->
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-shopping-bag fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">124</div>
+                                        <div>Bag</div>
+                                    </div>
+                                </div>
+                            </div>
+                <!--             <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a> -->
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-red">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-headphones fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">13</div>
+                                        <div>HeadPhones</div>
+                                    </div>
+                                </div>
+                            </div>
+                          <!--   <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+               
+                <!-- /.row -->
+
+                
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+    <div class="row" style="height:500px !important; " ng-if="laptopView">
+   
+
+                   <div align="center">
+                         <!--   <div class="col-md-6" > -->
+                             <!-- <h1 style="color:black;"><b>Item Details</b></h1> -->
+                            <div> <h1 style="color:black;"><b>Item Details</b></h1></div>
+                      <!-- <textarea class="col-md-12" style="height:450px;width:1000px" ng-model="itemStatus" readonly>{{itemStatus.total}}</textarea> --> 
+                           <!-- <textarea class="col-md-12" style="height:450px;width:1000px" ng-model="descriptions" rows="{{rowCount}}" readonly></textarea> -->
+                           <!-- </div> -->
+                           <div   style="background-color:lightblue;height:450px;width:800px">
+                            <label for="total" class="cols-md-6 control-label"  style="color:black;">Total:</label>                                   
+                             <label  class="cols-md-6 control-label" style="color:black;">{{itemStatus.total}}</label>
+                                                         <br><br>
+                            <label for="total" class="cols-md-6 control-label"  style="color:black;">Allocated:</label>                                   
+                             <label  class="cols-md-6 control-label" style="color:black;">{{itemStatus.allocated}}</label>
+                                                         <br><br>
+                            <label for="total" class="cols-md-6 control-label"  style="color:black;">InStock:</label>                                   
+                             <label  class="cols-md-6 control-label" style="color:black;">{{itemStatus.instock}}</label>
+                                                         <br><br>
+                            <label for="total" class="cols-md-6 control-label"  style="color:black;">Defective:</label>                                   
+                             <label  class="cols-md-6 control-label" style="color:black;">{{itemStatus.defective}}</label>
+                                                         <br>                        
+                            <br>
+                           </div>
+        
+                            <div  >
+                            
+ <!--                                <input type="submit"  value="Add new item" ng-click="AddNewItem1()">
+                                <input type="submit" value="Complete Details" ng-click="Summary(); loadSummary() "> -->
+                                <button type="button" class="btn btn-primary"  value="Add new item" ng-click="AddNewItem1()">Add New Item</button>
+                                <button type="button" class="btn btn-primary" value="Complete Details" ng-click="Summary();loadSummary() ">Complete Details</button>
+                                <span ng-controller="upload">                         
+         <button type="button"  ngf-select ng-model="file" ngf-multiple="false"  class="btn btn-primary" ng-click="uploadFile()" >Upload file</button>
+
+                        </span> 
+                    
+                        </div>
+                    </div>
+    </div>
+    
+    <div class="row container" style="height:500px !important;"  ng-if="addSummary">
+    
+    	<div class="col-lg-12">
+  			<h1 style="color:black">Complete Detail</h1>
+   		
+		 <table style="color:black">
+		<thead>
+		<tr>
+		<td>
+			<a href="#" ng-click="sortType = 'itemID'">Item ID</a>
+		</td>
+		<td>
+			<a href="#" ng-click="sortType = 'empID'">Employee ID</a>
+		</td>
+		<td>
+			<a href="#" ng-click="sortType = 'status'">Item Status</a>
+		</td>
+		<td>
+          <a href="#" ng-click="sortType = 'location'">Location</a>
+        </td>
+        <td>
+          <a href="#" ng-click="sortType = 'model'"> Model</a>
+        </td>
+        <td>
+          <a href="#" ng-click="sortType = 'yearOfPurchase'">Year of Purchase</a>
+        </td>
+      </tr>
+ </thead>
+		
+	<tbody>
+		  <tr ng-repeat="x in itemSummary | orderBy:sortType">
+		   <td>{{ x.itemID }}</td>
+		    <td>{{ x.empID }}</td>
+		    <td>{{ x.status }}</td>
+		    <td>{{ x.location }}</td>
+		    <td>{{ x.model }}</td>
+		    <td>{{ x.yearOfPurchase }}</td> 
+		  </tr>
+		  </tbody>
+		</table> 
+ </div>
+	</div>
+
+    <div class="row,container" style="height:500px !important; " ng-if="AllocateForm">
+   
+
+                    <div class="col-lg-12" align="center" ng-controller="Allocatecontroller" >
+                        <div >
+                         <!--   <div class="col-md-6" > -->
+                            <div ng-show="header">
+                             <h1 style="color:black;"><b>Allocate Item</b></h1>
+                             <br>
+                             <br>
+                             </div>
+
+                             <div ng-show="Deallocateheader">
+                             <h1 style="color:black;"><b>Deallocate Item</b></h1>
+                             <br>
+                             <br>
+                             </div>
+
+                            <div class="main-login main-center">
+
+                             <form class="form-horizontal" method="post" action="#">
+
+                                <div class="form-group" >
+                                    <label for="empID" class="cols-md-6 control-label"  style="color:black;">Employee Id</label>
+                                    <div class="cols-sm-5" style="width:450px">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                            <input ng-model="employee.empID" type="empID" class="form-control" name="empID"   placeholder="Enter Employee Id"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
+                             <div class="form-group">
+                                <label for="itemID" class="cols-sm-2 control-label" style="color:black;">Item Id</label>
+                                <div class="cols-sm-10" style="width:450px">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                        <input ng-model="employee.itemID" type="itemID" class="form-control" name="itemID"   placeholder="Enter Item Id"/>
+                                    </div>
+                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                            <label for="itemCategoryName" class="cols-sm-2 control-label" style="color:black;">Item Category Name</label>
+                            <div class="cols-sm-10" style="width:450px">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input ng-model="employee.itemCategoryName" type="text" class="form-control" name="itemCategoryName" id="itemCategoryName"  placeholder="Enter Item Category Name"/>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="form-group" ng-show="AllocateStatus">
+                            <label for="status" class="cols-sm-2 control-label" style="color:black;">Item Status</label>
+                            <div class="cols-sm-10" style="width:450px">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input ng-model="employee.status" type="text" class="form-control" name="status" id="status"  placeholder="Allocated" disabled/>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="form-group" ng-show="DeAllocateStatus">
+                            <label for="status" class="cols-sm-2 control-label" style="color:black;">Item Status</label>
+                            <div class="cols-sm-10" style="width:450px">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input ng-model="employee.status" type="text" class="form-control" name="status" id="status"  placeholder="Enter your status" />
+                                </div>
+                            </div>
+                            </div>
+
+                            <br>
+
+                            <div class="form-group" align="center" ng-show="AllocateStatus">
+                            <button ng-click="detailSubmit()" style="width:250px" type="button" class="btn btn-primary btn-lg btn-block login-button">Submit</button>
+                            </div>
+                            
+                            <div class="form-group" align="center" ng-show="DeAllocateStatus">
+                            <button ng-click="deallocateItem()" style="width:250px" type="button" class="btn btn-primary btn-lg btn-block login-button">Submit</button>
+                            </div>
+
+                        </form>
+
+                        </div>
+                           
+                        </div>
+                    </div>
+    </div>
+   
+
+    <div class="row container" style="height:500px !important; " ng-if="AddNewItem">
+   
+
+                    <div class="col-lg-12" align="center"  >
+                        <div >
+                         <!--   <div class="col-md-6" > -->
+                            <h1 style="color:black;"><b>Add New Item</b></h1>
+                             <br>
+                             <br>
+
+                            <div class="main-login main-center">
+
+                             <form class="form-horizontal" method="post" action="#">
+
+                                <div class="form-group">
+                                <label for="itemID" class="cols-sm-2 control-label" style="color:black;">Item Id</label>
+                                <div class="cols-sm-10" style="width:450px">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                        <input ng-model="item.itemID" type="itemID" class="form-control" name="itemID"   placeholder="Enter Item Id"/>
+                                    </div>
+                                 </div>
+                                </div>
+
+                                <div class="form-group" >
+                                    <label for="itemtypeID" class="cols-md-6 control-label"  style="color:black;">ItemType Id</label>
+                                    <div class="cols-sm-10" style="width:450px">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                            <input ng-model="item.itemtypeID" type="itemtypeID" class="form-control" name="itemtypeID"   placeholder="Enter ItemType Id"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="itemName" class="cols-sm-2 control-label" style="color:black;">Item Name</label>
+                                    <div class="cols-sm-10" style="width:450px">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                        <input ng-model="item.itemName" type="text" class="form-control" name="itemName" id="itemName"  placeholder="Enter Item Name"/>
+                                    </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="serviceTag" class="cols-sm-2 control-label" style="color:black;">Service Tag</label>
+                                    <div class="cols-sm-10" style="width:450px">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                        <input ng-model="item.serviceTag" type="text" class="form-control" name="serviceTag" id="serviceTag"  placeholder="Enter Service Tag"/>
+                                    </div>
+                                    </div>
+                                </div>
+
+                            
+                            <div class="form-group">
+                            <label for="model" class="cols-sm-2 control-label" style="color:black;">Model</label>
+                            <div class="cols-sm-10" style="width:450px">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input ng-model="item.model" type="text" class="form-control" name="model" id="model"  placeholder="Enter model"/>
+                                </div>
+                            </div>
+                            </div>
+
+							<div class="form-group">
+                            <label for="warranty" class="cols-sm-2 control-label" style="color:black;">Warranty</label>
+                            <div class="cols-sm-10" style="width:450px">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input ng-model="item.warranty" type="number" class="form-control" name="warranty" id="warranty"  placeholder="Enter warranty"/>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                            <label for="dateOfPurchase" class="cols-sm-2 control-label" style="color:black;">DateOfPurchase</label>
+                            <div class="cols-sm-10" style="width:450px">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input ng-model="item.dateOfPurchase" type="text" class="form-control" name="dateOfPurchase" id="dateOfPurchase"  placeholder="Date Of Purchase" />
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                            <label for="ram" class="cols-sm-2 control-label" style="color:black;">Item Ram</label>
+                            <div class="cols-sm-10" style="width:450px">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input ng-model="item.ram" type="text" class="form-control" name="ram" id="ram"  placeholder="Enter your ram" />
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                            <label for="processor" class="cols-sm-2 control-label" style="color:black;">Item Processor</label>
+                            <div class="cols-sm-10" style="width:450px">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input ng-model="item.processor" type="text" class="form-control" name="processor" id="processor"  placeholder="Enter processor" />
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                            <label for="os" class="cols-sm-2 control-label" style="color:black;">Item OS</label>
+                            <div class="cols-sm-10" style="width:450px">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    <input ng-model="item.os" type="text" class="form-control" name="os" id="os"  placeholder="Enter os" />
+                                </div>
+                            </div>
+                            </div>
+
+                            <br>
+
+                            <div class="form-group" align="center" >
+                            <button ng-click="NewItem()" style="width:250px" type="button" class="btn btn-primary btn-lg btn-block login-button">Submit</button>
+                            </div>
+
+                        </form>
+
+                        </div>
+                           
+                        </div>
+                    </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+ <script src="js/bootstrap.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+<!--     <script src="js/bootstrap.min.js"></script> -->
+         <script src="bower_components/jquery/dist/jquery.js"></script>
+          <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+          <script src="bower_components/angular/angular.js"></script>
+          <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+          <script src="bower_components/angular-ui-grid/ui-grid.min.js"></script>
+          <script src="bower_components/lodash/lodash.js"></script> 
+          <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+          <script type="text/javascript" src="Admin.js"></script>
+          <script type="text/javascript" src="List.js"></script>
+          <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+          <script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script> 
+<script src="bower_components/ng-file-upload/ng-file-upload.min.js"></script> 
+
+<script src="bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+
+
+          
+    <!-- Morris Charts JavaScript -->
+   <!-- <script src="js/plugins/morris/raphael.min.js"></script> -->
+   <!-- <script src="js/plugins/morris/morris.min.js"></script> -->
+  <!--  <script src="js/plugins/morris/morris-data.js"></script> -->
+
+</body>
+
+</html>

@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Implementation-Title: IT_Inventory Management System
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Jegan Muthaiah
+Implementation-Vendor-Id: com.au.itinventory
+Build-Jdk: 1.8.0_101
+Created-By: Maven Integration for Eclipse
+

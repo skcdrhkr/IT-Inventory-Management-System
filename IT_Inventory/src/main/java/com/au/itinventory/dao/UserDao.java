@@ -36,7 +36,7 @@ public class UserDao {
 
 	public Employee getEmpDetails(Employee emp) {
 		// TODO Auto-generated method stub
-		String query="select * from Employee where empID='"+emp.getEmpID()+"';";
+		String query="select * from Employee where empEmail='"+emp.getEmpEmail()+"';";
 		  return jdbcTemplate.query(query, new ResultSetExtractor<Employee>(){
 		   public Employee extractData(ResultSet rs) throws SQLException
 		   {

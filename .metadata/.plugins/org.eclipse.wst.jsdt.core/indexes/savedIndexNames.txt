@@ -1,0 +1,8 @@
+INDEX VERSION 1.3+C:\Users\Jegan Muthaiah\Desktop\IT-Inventory-Management-System\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3551215707.index
+1680075313.index
+1553852251.index
+608855591.index
+4278525230.index
+1867801276.index
+3395626747.index

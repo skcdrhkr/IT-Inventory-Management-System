@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;IT_Inventory/src/main/webapp/Laptop.js&apos; to &apos;Admin.js&apos;" description="Rename resource &apos;Laptop.js&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/webapp/Laptop.js" name="Admin.js" stamp="1470674638173" updateReferences="true"/>
+</session>

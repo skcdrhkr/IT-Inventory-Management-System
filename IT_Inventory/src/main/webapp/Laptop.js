@@ -1,44 +1,20 @@
-angular.module('LaptopModule', [])
+angular.module('AdminModule', [])
 	
-.controller('LaptopController', function($scope,$http) {
-
-
-		// $scope.loadDetails= function(item){	
-  //         var data = [
-  //           'Description 1',
-  //           'Description 2',
-  //           'Description 3',
-  //           'Description 4',
-  //           'Description 5',
-  //           'Description 6',
-  //           'Description 7',
-  //           'Description 8',
-  //         ];
-          
-  //         $scope.descriptions = data.join('\n');
-  //         $scope.rowCount = data.length;
-
-
-	
-
-	
-	
-//	$window.onload = function(e) {
-//		  //your magic here
-//		console.log("Function loaded automatically");
-//	}
+.controller('AdminController', function($scope,$http) {
 
 	
             $scope.laptopView = false;
 			$scope.homeDisplay = true;
 			$scope.AllocateForm = false;
 			$scope.AddNewItem = false;
+			$scope.addSummary = false;
 			
 			$scope.showLaptop = function () {
 			$scope.laptopView = true;
 			$scope.homeDisplay = false;
 			$scope.AllocateForm = false;
 			$scope.AddNewItem = false;
+			$scope.addSummary = false;
 		}
 
 			$scope.showHomePage = function() {
@@ -46,6 +22,7 @@ angular.module('LaptopModule', [])
 				$scope.homeDisplay = true;
 				$scope.AllocateForm = false;
 				$scope.AddNewItem = false;
+				$scope.addSummary = false;
 			}
 
 			$scope.allocateForm = function() {
@@ -57,6 +34,7 @@ angular.module('LaptopModule', [])
 				$scope.Deallocateheader=false;
 				$scope.AllocateStatus = true;
 				$scope.DeAllocateStatus = false;
+				$scope.addSummary = false;
 			}
 
 			$scope.DeallocateForm = function() {
@@ -68,53 +46,29 @@ angular.module('LaptopModule', [])
 				$scope.Deallocateheader=true;
 				$scope.AllocateStatus = false;
 				$scope.DeAllocateStatus = true;
+				$scope.addSummary = false;
 			}
 
-
-			$scope.AddNewItem1 =function() {
+           $scope.AddNewItem1 =function() {
 				$scope.laptopView = false;
 				$scope.homeDisplay = false;
 				$scope.AllocateForm = false;
 				$scope.AddNewItem = true;
+				$scope.addSummary = false;
 			}
 
+			$scope.Summary =function() {
+				$scope.laptopView = false;
+				$scope.homeDisplay = false;
+				$scope.AllocateForm = false;
+				$scope.AddNewItem = false;
+				$scope.addSummary=true;
+			}
 
-			$scope.itemStatus ={
-		  			Total : '',
-		  			InStock :'',
-		  			Allocated :'',
-		  			Defective :'',
-		  			};
+			
 		  		
 	
-//			$scope.loadSummary=function(itemname){
-//				console.log(itemname.item);
-//				var itemName=itemname.item;
-//				 $http.get('http://localhost:8080/IT_Inventory/summary?itemCategoryName='+itemName).then(function successCallback(response) {
-//			            itemSummary = response.data;
-//			            alert(itemSummary);
-//			            
-//			        }, function errorCallback(response) {
-//			            console.log(response.statusText);
-//			        })
-//				}
-			
-			
-			$scope.loadDetails = function(itemname){
-				console.log(itemname.item);
-				var itemName=itemname.item;
-				 $http.get('http://localhost:8080/IT_Inventory/itemStatus?itemCategoryName='+itemName).then(function successCallback(response) {
-			            itemStatus = response.data;
-			            //alert(itemStatus);
-			            
-			        }, function errorCallback(response) {
-			            console.log(response.statusText);
-			        })
-				}
-			
-			
-
-       		$scope.item ={
+      		$scope.item ={
       			itemID : '',
       			itemtypeID :'',
       			itemName :'',
@@ -125,12 +79,19 @@ angular.module('LaptopModule', [])
       			ram : '',
       			processor :'',
       			os:''
-			};
+			}
       		
+      		
+      		$scope.employee ={
+    				empID : '',
+    				roleID:'',
+    				empName : '',
+    				empEmail : '',
+    				empLocation : '',
+    				phone : ''
+    			};
 
-			//$scope.variable = employee;
 
-			//$scope.variable = "AngularJS POST Spring MVC Example:";	
 
 			$scope.NewItem = function(){
 				var dataObj = $scope.item;		
@@ -142,17 +103,27 @@ angular.module('LaptopModule', [])
 				response.error(function(data, status, headers, config) {
 					alert( "Exception details: " + JSON.stringify({data: data}));
 				});
-			}
-
-	})
+			};
 
       
+/*			$scope.employeeDetails = function () {
+		  		  console.log("page load List Controller")
+			var empEmail=localStorage.getItem("emailID")
+			  $http({
+	     				 method : 'GET',
+	       			 url : 'http://localhost:8080/IT_Inventory/employeeDetails?empEmail='+empEmail}).then(function successCallback(response) {
+	  				 	$scope.employee = response.data;
+	  				 	console.log($scope.employee);
+	  				 }, function errorCallback(response) {
+	      			 console.log(response.statusText);
+	  			});
 
+			}
+*/
 
-      .controller('ListController', function($scope,$http) {
-
-      	//$scope.items=['Laptop' , 'Mouse' , 'HeadPhones', 'Bag']
-      	$scope.items=[];
+		$scope.itemStatus = {};
+    	$scope.items=[];
+ 
     	$scope.fn_load = function () {
   		  console.log("page load List Controller")
   		  $http({
@@ -160,35 +131,77 @@ angular.module('LaptopModule', [])
          			 url : 'http://localhost:8080/IT_Inventory/viewItemList'
     				 }).then(function successCallback(response) {
     				 	$scope.items = response.data;
-    				 	console.log(items);
-         
+    				 	console.log($scope.items);
     				 }, function errorCallback(response) {
         			 console.log(response.statusText);
     			});
-			}
+  		  
+  		/*var empEmail=localStorage.getItem("emailID")
+		  $http({
+     				 method : 'GET',
+       			 url : 'http://localhost:8080/IT_Inventory/employeeDetails?empEmail='+empEmail}).then(function successCallback(response) {
+  				 	$scope.employee = response.data;
+  				 	console.log($scope.employee);
+  				 }, function errorCallback(response) {
+      			 console.log(response.statusText);
+  			});
+		*/	
+  		  }
 
-//    	$scope.loadSummary=function(itemName){
-//    		
-//    		console.log(itemName.item);
-//    	}
-//    	    
-    	$scope.loadSummary=function(itemname){
-			console.log(itemname.item);
-			var itemName=itemname.item;
-			var itemSummary=[];
-			 $http.get('http://localhost:8080/IT_Inventory/summary?itemCategoryName='+itemName).then(function successCallback(response) {
-		            itemSummary = response.data;
-		            alert(itemSummary);
+    	
+
+//		$scope.call = function(val){
+//			$scope.itemStatus.total = 92348;
+//			alert($scope.itemStatus.total);
+//		};
+		
+    	
+		$scope.loadDetails = function(itemName){
+			
+			$scope.categoryName=itemName.item;
+			$http.get('http://localhost:8080/IT_Inventory/itemStatus?itemCategoryName='+$scope.categoryName).then(function successCallback(response) {
+	            $scope.itemStatus = response.data;
+	            console.log($scope.itemStatus);
+			}, function errorCallback(response) {
+	            console.log(response.statusText);
+	        })
+			
+		};
+		
+//		$scope.itemSummary=[
+//		                    {
+//		                    	itemID : '1001',
+//		            		    empID : 1774,
+//		            		    status : 'allocated',
+//		            		    location : 'Banglore',
+//		            		    model : 'Dell',
+//		            		    yearOfPurchase : '16/05/16'
+//		                    },
+//		                    {
+//		                    	itemID : '1002',
+//		            		    empID : 1774,
+//		            		    status : 'allocated',
+//		            		    location : 'Banglore',
+//		            		    model : 'Dell',
+//		            		    yearOfPurchase : '16/05/16'
+//		                    }];
+//		
+		$scope.itemSummary=[];
+    	$scope.loadSummary=function(){
+			//console.log(itemname.item);
+    	
+			//var itemname=localStorage.getItem("itemCategoryName");
+			//console.log(localStorage.getItem("itemCategoryName"));
+			 $http.get('http://localhost:8080/IT_Inventory/summary?itemCategoryName='+$scope.categoryName).then(function successCallback(response) {
+		            $scope.itemSummary = response.data;
+		           console.log($scope.itemSummary);
 		            
 		        }, function errorCallback(response) {
 		            console.log(response.statusText);
 		        })
-			}
-		
+    	}; 
     	
-    	
-  		})
-
+		})
 
 //      	 $scope.items=[];
 //
@@ -206,7 +219,6 @@ angular.module('LaptopModule', [])
 
 
 
-
 .controller ('Allocatecontroller' , function($scope,$http){
 
 
@@ -217,33 +229,64 @@ angular.module('LaptopModule', [])
       			status:''
 			};
       		
-			//$scope.variable = employee;
-
-			//$scope.variable = "AngularJS POST Spring MVC Example:";	
 
 			$scope.detailSubmit = function(){
 				var dataObj = $scope.employee;		
 				
 				$http.post('http://localhost:8080/IT_Inventory/allocateItem', dataObj).then(function successCallback(response) {
-					alert("Allocation Success");
+					//alert("Allocation Success");
+					var result=response.data;
+					alert(result);
 				}, function errorCallback(response) {
 		            console.log(response.statusText);
 		        });
-			}
-
-     
-
-      			$scope.deallocateItem = function(){
+			};
+      		
+			$scope.deallocateItem = function(){
 				var dataObj = $scope.employee;		
 
 				$http.post('http://localhost:8080/IT_Inventory/deallocateItem', dataObj).then(function successCallback(response) {
-					alert("Deallocation Success");
+					var result=response.data;
+					alert(result);
 				}, function errorCallback(response) {
 		            console.log(response.statusText);
 		        });
 				
-			}
+			};
 
       })
+      
+.controller('upload', ['$scope', 'Upload','$q', '$timeout', function ($scope, Upload,$q, $timeout) {
+    $scope.$watch('files', function () {
+        $scope.upload($scope.files);
+    });
+    $scope.$watch('file', function () {
+        if ($scope.file != null) {
+            $scope.upload([$scope.file]);
+        }
+    });
+    $scope.log = '';
+
+    $scope.upload = function (files) {
+        if (files && files.length) {
          
-   
+                var file = files[i];
+                 var fd = new FormData();
+    fd.append('data', angular.toJson(test));
+    fd.append("file", file);
+    $http({
+        method: 'POST',
+        url: 'localhost:8080/IT_Inventory/fileUpload',
+        headers: {'Content-Type': undefined},
+        data: fd,
+        transformRequest: angular.identity
+        })
+       .success(function(data, status) {
+             alert("success");
+        });
+            }
+    };
+}])
+		
+      
+         
