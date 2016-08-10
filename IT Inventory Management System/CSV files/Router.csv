@@ -1,0 +1,5 @@
+itemID;itemtypeID;itemName;serviceTag;dateOfPurchase;model;warranty;bandwidth
+R1;Router101;Router;R00001;05-07-2016;TP-LINK;2;10
+R2;Router101;Router;R00002;05-07-2016;TP-LINK;2;10
+R3;R12;Router;R00003;05-07-2016;D-LINK;2;5
+R4;RL10;Router;R00004;05-07-2016;Betel;2;6

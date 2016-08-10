@@ -1,0 +1,7 @@
+itemID;itemtypeID;itemName;serviceTag;dateOfPurchase;model;warranty;ram;processor;os
+T1;Latitude36;Laptop;LP00001;05-07-2016;Dell;5;4GB;i5;windows10
+T2;MacBookAir;Laptop;LP00002;05-07-2016;Apple;5;8GB;i7;ios
+T3;Latitude36;Laptop;LP00003;05-07-2016;Dell;5;4GB;i5;windows10
+T4;MacBookAir;Laptop;LP00004;05-07-2016;Apple;5;8GB;i7;ios
+T5;G510;Laptop;LP00005;05-07-2016;Lenovo;5;4GB;i5;windows10
+T6;Az10;Laptop;LP00006;05-07-2016;Asus;5;4GB;i5;windows10

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>FrontPage</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="996148857811-v0sqhp5928ovgj70jb380pbkdkkgfatj.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <style type="text/css">
+    .bs{
+      margin: 20px;A
+    }
+ 
+    .body{
+    	 background: url('front.jpg') no-repeat center center fixed;
+    	  -moz-background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    
+    }
+    .layer {
+    background-color: rgba(10,10,10, 0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+    </style>
+  </head>
+  <body class="body"  >
+  <div class="layer">
+  <h1 align="center"  style="font-family: inherit;font-size: 80px;font-weight: bold;position: absolute;top: 250px;left: 50px;color: antiquewhite;">IT Inventory Management System</h1>
+<div ><img style="position:absolute;width:500px;height:170px;" src="accolite.png" /></div>
+    
+	<div style="data-background-color:#D8D8D8;data-border-radius:20px;">
+    <div class="g-signin2"  data-onsuccess="onSignIn"  style="position:absolute;left:1180px;top:60px;"></div>
+    </div></div>
+    <script>
+    function onSignIn(googleUser){
+    	 // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+         // The ID token you need to pass to your backend:
+        //var id_token = googleUser.getAuthResponse().id_token;
+        localStorage.setItem("emailID", profile.getEmail());
+    	 window.location.href = "/IT_Inventory/login?emailID="+profile.getEmail();
+        
+        //console.log("ID Token: " + id_token);
+      };
+      
+      </script>
+       <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+       <script src="bower_components/jquery/dist/jquery.js"></script>
+      <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+      <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+      <script src="bower_components/angular-ui-grid/ui-grid.min.js"></script>
+      <script src="bower_components/lodash/lodash.js"></script> 
+      <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="homepage.js"></script>
+    <script type="text/javascript" src="registration.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  </body>
+</html>
